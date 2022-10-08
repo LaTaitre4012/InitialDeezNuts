@@ -352,14 +352,14 @@ public class PrometeoCarController : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.Space)){
           RecoverTraction();
         }
-        if((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))){
+        if((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.Z))){
           ThrottleOff();
         }
-        if((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) && !Input.GetKey(KeyCode.Space) && !deceleratingCar){
+        if((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.Z)) && !Input.GetKey(KeyCode.Space) && !deceleratingCar){
           InvokeRepeating("DecelerateCar", 0f, 0.1f);
           deceleratingCar = true;
         }
-        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && steeringAxis != 0f){
+        if(!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.D) && steeringAxis != 0f){
           ResetSteeringAngle();
         }
 
