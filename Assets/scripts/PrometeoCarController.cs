@@ -13,7 +13,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 public class PrometeoCarController : MonoBehaviour
 {
@@ -126,6 +125,7 @@ public class PrometeoCarController : MonoBehaviour
       float localVelocityZ;
       float localVelocityX;
       bool deceleratingCar;
+      bool touchControlsSetup = false;
       /*
       The following variables are used to store information about sideways friction of the wheels (such as
       extremumSlip,extremumValue, asymptoteSlip, asymptoteValue and stiffness). We change this values to
@@ -139,14 +139,6 @@ public class PrometeoCarController : MonoBehaviour
       float RLWextremumSlip;
       WheelFrictionCurve RRwheelFriction;
       float RRWextremumSlip;
-      //input system
-      CarControls controls;
-
-    void Awake()
-    {
-        controls = new CarControls();
-        controls.Drive.Forward.performed += ctx => GoForward();
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -245,25 +237,25 @@ public class PrometeoCarController : MonoBehaviour
       // Save the local velocity of the car in the z axis. Used to know if the car is going forward or backwards.
       localVelocityZ = transform.InverseTransformDirection(carRigidbody.velocity).z;
 
-        //CAR PHYSICS
+      //CAR PHYSICS
 
-        /*
-        The following methods are called whenever a certain key is pressed. For example, in the first 'if' we call the
-        method GoForward() if the user has pressed W.
+      /*
+      The following methods are called whenever a certain key is pressed. For example, in the first 'if' we call the
+      method GoForward() if the user has pressed W.
 
-        In this part of the code we specify what the car needs to do if the user presses W (throttle), S (reverse),
-        A (turn left), D (turn right) or Space bar (handbrake).
-        */
+      In this part of the code we specify what the car needs to do if the user presses W (throttle), S (reverse),
+      A (turn left), D (turn right) or Space bar (handbrake).
+      */
 
-      if (Input.GetKey(KeyCode.Z)){
-        CancelInvoke("DecelerateCar");
-         deceleratingCar = false;
-         GoForward();
+      if(Input.GetKey(KeyCode.Z)){
+          CancelInvoke("DecelerateCar");
+          deceleratingCar = false;
+          GoForward();
       }
-      if (Input.GetKey(KeyCode.S)){
-         CancelInvoke("DecelerateCar");
-         deceleratingCar = false;
-         GoReverse();
+      if(Input.GetKey(KeyCode.S)){
+          CancelInvoke("DecelerateCar");
+          deceleratingCar = false;
+          GoReverse();
       }
 
       if(Input.GetKey(KeyCode.Q)){
@@ -294,15 +286,6 @@ public class PrometeoCarController : MonoBehaviour
       // We call the method AnimateWheelMeshes() in order to match the wheel collider movements with the 3D meshes of the wheels.
       AnimateWheelMeshes();
 
-    }
-
-    private void OnEnable()
-    {
-        controls.Drive.Enable();
-    }
-    private void OnDisable()
-    {
-        controls.Drive.Disable();
     }
 
     // This method converts the car speed data from float to string, and then set the text of the UI carSpeedText with this value.
